@@ -530,6 +530,7 @@ class WhatsAppCaptureApp:
         self.active = False
         self.worker_kind = None
         self.import_progress.stop()
+        self.import_progress.configure(value=0)
         self.import_button.configure(state="normal")
         self.last_html = html_path.resolve()
         self.last_folder = self.last_html.parent
@@ -547,7 +548,9 @@ class WhatsAppCaptureApp:
             duration = capture.get("duration_s", "?")
             peer_state = ("Karşı taraf verisi var." if has_peer_data(report)
                           else "Karşı taraf verisi bulunamadı.")
-            self.summary_var.set(f"{events} olay · {duration} saniye · {peer_state}")
+            sample = report.get("sample")
+            label = "ÖRNEK VERİ · " if isinstance(sample, dict) and sample.get("is_synthetic") is True else ""
+            self.summary_var.set(f"{label}{events} olay · {duration} saniye · {peer_state}")
             self.status_var.set("Rapor hazır.")
         if self.closing:
             self._destroy()
@@ -558,6 +561,7 @@ class WhatsAppCaptureApp:
         self.active = False
         self.worker_kind = None
         self.import_progress.stop()
+        self.import_progress.configure(value=0)
         self.import_button.configure(state="normal")
         self.status_var.set("Rapor açılamadı.")
         self.summary_var.set("Dosya biçimini ve boyutunu kontrol edin.")

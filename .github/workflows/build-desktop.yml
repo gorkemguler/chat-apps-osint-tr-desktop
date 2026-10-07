@@ -90,6 +90,19 @@ jobs:
         shell: bash
         run: |
           BUILD_PYTHON=/usr/bin/python3 bash build_linux.sh
+          smoke_home="$(mktemp -d)"
+          run_status=0
+          HOME="$smoke_home" xvfb-run -a timeout 8s \
+            dist/WhatsAppRaporGoruntuleyici/WhatsAppRaporGoruntuleyici \
+            examples/demo_report.json || run_status=$?
+          if [ "$run_status" -ne 124 ]; then
+            echo "Paketlenmiş Linux uygulaması beklenmedik şekilde kapandı: $run_status" >&2
+            exit 1
+          fi
+          if ! find "$smoke_home/WhatsApp Raporları" -name 'wa_peer_report_*.html' -type f -print -quit | grep -q .; then
+            echo "Paketlenmiş Linux uygulaması örnek raporu oluşturmadı" >&2
+            exit 1
+          fi
           tar -C dist -czf dist/WhatsAppRaporGoruntuleyici-Linux.tar.gz WhatsAppRaporGoruntuleyici
 
       - name: Windows paketini sakla

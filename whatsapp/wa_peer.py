@@ -1278,6 +1278,12 @@ def render_html(report):
             i, _esc(I18N["tr"].get("cav.%d" % i, c)))
         for i, c in enumerate(caveats))
 
+    sample = report.get("sample")
+    sample_banner = (
+        '<div class="demo-banner" role="note">ÖRNEK VERİ · Bu rapordaki tüm bilgiler '
+        'sentetiktir; gerçek bir aramayı temsil etmez.</div>'
+        if isinstance(sample, dict) and sample.get("is_synthetic") is True else "")
+
     return HTML_TEMPLATE % {
         "i18n_json": _script_json(I18N),
         "map_config": _script_json(map_cfg),
@@ -1291,6 +1297,7 @@ def render_html(report):
                        'crossorigin=""></script>'
                        if map_cfg["state"] == "ok" else ""),
         "generated": _esc(generated),
+        "sample_banner": sample_banner,
         "events": _esc(cap.get("events")),
         "duration": _esc(cap.get("duration_s")),
         "numeric": _esc(cap.get("numeric_fields")),
@@ -1370,6 +1377,10 @@ HTML_TEMPLATE = """<!doctype html>
       "Microsoft YaHei","PingFang SC",sans-serif;
     padding:28px 16px}
   .wrap{max-width:1040px;margin:0 auto}
+  .demo-banner{position:sticky;top:0;z-index:100;max-width:1040px;
+    margin:0 auto 18px;padding:11px 16px;border:2px solid #eab308;
+    border-radius:12px;background:#38280f;color:#ffedc0;text-align:center;
+    font-weight:700;box-shadow:var(--shadow)}
   .topbar{display:flex;align-items:center;justify-content:space-between;
     gap:16px;flex-wrap:wrap;margin-bottom:6px}
   .brand{display:flex;align-items:center;gap:13px}
@@ -1440,6 +1451,7 @@ HTML_TEMPLATE = """<!doctype html>
 </style>
 </head>
 <body>
+%(sample_banner)s
 <div class="wrap">
   <div class="topbar">
     <div class="brand">

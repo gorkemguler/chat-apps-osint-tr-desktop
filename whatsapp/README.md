@@ -50,7 +50,7 @@ Kaynak koddan açmak isterseniz `python3 wa_peer_gui.py` komutunu kullanın; ayn
 
 ### GitHub Actions üzerinden hazır paket
 
-Bu türev depo GitHub'a yüklendikten ve iş akışı başarılı şekilde çalıştıktan sonra türev deponun **Actions → Masaüstü paketleri → en yeni başarılı çalıştırma → Artifacts** yolunu izleyin. `WhatsAppAramaRaporu-Windows` yapıtı EXE içerir. `WhatsAppRaporGoruntuleyici-macOS-arm64` Apple Silicon, `WhatsAppRaporGoruntuleyici-macOS-x64` Intel Mac içindir; her ikisi `.app` ZIP arşivi içerir. `WhatsAppRaporGoruntuleyici-Linux` yapıtı `.tar.gz` içerir. Mac ve Linux arşivlerini açıp uygulamayı dosya yöneticisinden başlatın. Başarılı CI derlemesi canlı Mac/Linux yakalama desteği anlamına gelmez.
+[Masaüstü paketleri iş akışını](https://github.com/gorkemguler/chat-apps-osint-tr-desktop/actions/workflows/build-desktop.yml) açıp en yeni başarılı çalıştırmanın **Artifacts** bölümüne gidin. `WhatsAppAramaRaporu-Windows` yapıtı EXE içerir. `WhatsAppRaporGoruntuleyici-macOS-arm64` Apple Silicon, `WhatsAppRaporGoruntuleyici-macOS-x64` Intel Mac içindir; her ikisi `.app` ZIP arşivi içerir. `WhatsAppRaporGoruntuleyici-Linux` yapıtı `.tar.gz` içerir. Mac ve Linux arşivlerini açıp uygulamayı dosya yöneticisinden başlatın. Başarılı CI derlemesi canlı Mac/Linux yakalama desteği anlamına gelmez.
 
 Mac paketleri Actions üzerinde macOS 15, Linux paketi Ubuntu 24.04 ortamında üretilir. Daha eski işletim sistemleri veya Linux dağıtımları için kendi sisteminizde paketleme betiğini kullanın; eski sistemlerle hazır yapıtların uyumluluğu doğrulanmadı.
 
@@ -58,11 +58,15 @@ Yerel Mac ortamında Tkinter içeren güncel bir Python yoksa `build_macos.sh` p
 
 ### Ekran görüntüleri
 
+![Linux rapor görüntüleme arayüzü](../docs/screenshots/gui-linux-rapor-goruntuleme.png)
+
+Bu, Linux üzerinde açılmış gerçek rapor görüntüleme arayüzüdür; [sentetik örnek rapor](examples/demo_report.json) kullanılmıştır.
+
 ![Sentetik verilerle oluşturulmuş HTML rapor ekran görüntüsü](../docs/screenshots/rapor-ornegi.png)
 
 ![Sentetik rapordaki uç nokta ayrıntıları](../docs/screenshots/rapor-ayrintilar.png)
 
-İki görüntü de [sentetik örnek JSON dosyasından](examples/demo_report.json) üretilmiş gerçek HTML raporunun tarayıcı ekran görüntüleridir; masaüstü arayüzünü veya gerçek aramayı göstermez. Arayüz görüntüleri henüz yoktur. Önerilen dosya adları `../docs/screenshots/windows-yakalama.png` ve `../docs/screenshots/mac-linux-rapor-goruntuleme.png`.
+Son iki görüntü, aynı sentetik verilerden üretilmiş gerçek HTML raporunun tarayıcı ekran görüntüleridir; gerçek aramayı göstermez.
 
 ---
 
@@ -121,6 +125,8 @@ Araç her çalıştırıldığında iki dosya oluşturur ve raporu ekrana yazdı
 
 - `wa_peer_full_<timestamp>.json`: Yakalanan bütün alanları içeren ayrıntılı veri dosyası.
 - `wa_peer_report_<timestamp>.html`: Tarayıcıda açılan gösterge paneli. Türkçe, İngilizce, Rusça, Arapça ve Çince dil seçenekleri ile karşı tarafın IP konumunu gösteren bir harita içerir.
+
+HTML raporu üst bilgiler, kimlik, ağ, NAT, konum durumu ve uç noktalar için kısa bir görsel özettir. Telemetri, davranış, parmak izi ve diğer tam alanlar JSON raporunda bulunur.
 
 ---
 

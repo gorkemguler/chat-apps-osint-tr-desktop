@@ -1,3 +1,5 @@
+> Preserved copy of the original English WhatsApp README from [0x6rss/chat-apps-osint](https://github.com/0x6rss/chat-apps-osint). For this Turkish derivative's current usage and original-project/MIT attribution, see the [main README](../README.md).
+
 # wa_peer - WhatsApp Desktop call peer-metadata capture
 
 A single-file Frida tool that surfaces the peer-side metadata the WhatsApp for

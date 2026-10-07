@@ -16,7 +16,7 @@ Kurulum, platforma göre kullanım ve rapor alanlarının açıklamaları için 
 
 ## Hazır paketleri indirme
 
-Bu türev GitHub'a yüklendikten ve iş akışı başarıyla tamamlandıktan sonra deponun **Actions → Masaüstü paketleri → en yeni başarılı çalıştırma → Artifacts** bölümünü açın:
+[Masaüstü paketleri iş akışını](https://github.com/gorkemguler/chat-apps-osint-tr-desktop/actions/workflows/build-desktop.yml) açın; en yeni başarılı çalıştırmanın **Artifacts** bölümünden işletim sisteminize uygun paketi indirin:
 
 - `WhatsAppAramaRaporu-Windows`: Windows EXE.
 - `WhatsAppRaporGoruntuleyici-macOS-arm64`: Apple Silicon Mac için `.app` ZIP dosyası.
@@ -32,13 +32,19 @@ Mac yapıtları GitHub Actions üzerindeki **macOS 15**, Linux yapıtı **Ubuntu
 3. **Windows:** WhatsApp masaüstü uygulamasında arama yaparken **Yakalamayı başlat** seçeneğini kullanın; aramayı bitirdikten sonra **Durdur ve rapor oluştur** seçeneğine basın.
 4. **Tüm sistemler:** **Rapor inceleme** bölümünde önceden oluşturulmuş `.json`, `.jsonl` veya `.html` dosyasını **Dosya seç…** ile seçip **Raporu incele** seçeneğine basın. Denemek için [sentetik örnek raporu](whatsapp/examples/demo_report.json) seçebilirsiniz.
 
+HTML raporu kısa bir görsel özet sunar. Telemetri, davranış, parmak izi ve diğer tüm alanlar için JSON raporunu inceleyin.
+
 ## Ekran görüntüleri
+
+![Linux rapor görüntüleme arayüzü](docs/screenshots/gui-linux-rapor-goruntuleme.png)
+
+Bu, Linux üzerinde açılmış gerçek rapor görüntüleme arayüzüdür; [sentetik örnek rapor](whatsapp/examples/demo_report.json) kullanılmıştır.
 
 ![Sentetik verilerle oluşturulmuş HTML rapor ekran görüntüsü](docs/screenshots/rapor-ornegi.png)
 
 ![Sentetik rapordaki uç nokta ayrıntıları](docs/screenshots/rapor-ayrintilar.png)
 
-İki görüntü de [sentetik örnek JSON verisinden](whatsapp/examples/demo_report.json) üretilmiş **gerçek HTML raporunun tarayıcı ekran görüntüleridir**; gerçek bir aramayı veya masaüstü uygulaması penceresini göstermez. Masaüstü arayüzü görüntüleri henüz eklenmemiştir. Bunlar için önerilen dosya adları `docs/screenshots/windows-yakalama.png` ve `docs/screenshots/mac-linux-rapor-goruntuleme.png`.
+Son iki görüntü, aynı sentetik verilerden üretilmiş **gerçek HTML raporunun tarayıcı ekran görüntüleridir**; gerçek bir aramayı göstermez.
 
 Yalnızca kendi hesabınızda, açık rızayla veya yetkili araştırmada kullanın. Yakalanan raporlar IP adresi gibi kişisel veriler içerebilir.
 
