@@ -1,0 +1,178 @@
+{
+  "capture": {
+    "events": 37,
+    "duration_s": 61.0,
+    "numeric_fields": 11,
+    "string_fields": 12
+  },
+  "peer": {
+    "identity": {
+      "platform": "android",
+      "app_version": "2.26.0-demo",
+      "device_class": "Örnek telefon",
+      "hardware_year_class": 2022,
+      "linked_device_count": 1,
+      "_note": "platform from the 17-entry platform_to_cstr enum; device count from multi_device_info_count"
+    },
+    "network": {
+      "public_endpoints": [
+        {
+          "ip": "198.51.100.24",
+          "port": 53124,
+          "address_class": "public",
+          "_note": "server-reflexive candidate from call signalling — full address and port, not masked"
+        }
+      ],
+      "private_endpoints": [
+        {
+          "ip": "192.168.50.23",
+          "port": 53124,
+          "address_class": "private (RFC1918)",
+          "_note": "host candidate from the peer's own LAN or carrier NAT; delivered even when the two sides are on different networks"
+        }
+      ],
+      "telemetry_view": {
+        "peer_public_ip_masked": "198.51.100.0/24",
+        "peer_lan_prefix_masked": "192.168.50.0/24",
+        "_note": "the telemetry path masks the peer address to /24 while the signalling path above does not"
+      },
+      "geolocation": {
+        "query": "198.51.100.24",
+        "error": "reserved / non-routable address"
+      },
+      "medium": {
+        "peer": 2,
+        "peer_meaning": "not cellular (Wi-Fi, or Ethernet on a desktop peer)",
+        "self": 2,
+        "self_meaning": "not cellular (Wi-Fi, or Ethernet on a desktop peer)"
+      },
+      "nat": {
+        "symmetric": false,
+        "ipv6_capable": true,
+        "p2p_disabled": false,
+        "_note": "p2p_disabled is the desktop equivalent of Android's disallowAllP2P(). False means 'Protect IP address in calls' was not in effect. Media going over a relay does not imply the address was protected — candidates are still exchanged either way."
+      }
+    },
+    "relays": {
+      "servers": [
+        "relay-a.example.invalid",
+        "relay-b.example.invalid"
+      ],
+      "observed_candidates": [],
+      "latency": [
+        {
+          "relay": "relay-a.example.invalid",
+          "our_rtt_ms": 32.0,
+          "peer_rtt_ms": 45.0,
+          "delta_ms": 13.0,
+          "_note": "peer is farther from this relay than we are"
+        },
+        {
+          "relay": "relay-b.example.invalid",
+          "our_rtt_ms": 51.0,
+          "peer_rtt_ms": 37.0,
+          "delta_ms": -14.0,
+          "_note": "peer is closer to this relay than we are"
+        }
+      ],
+      "latency_usable": true,
+      "latency_spread_ms": 8.0,
+      "_note": "identical or negative peer values are placeholders; no location inference can be drawn from them. A mixed profile (closer to some relays, farther from others) is more discriminating than a uniform one."
+    },
+    "behaviour": {
+      "speech_activity": {
+        "samples": 10,
+        "approx_interval_ms": 3000,
+        "max_level": 52,
+        "mean_level_while_speaking": 34.8,
+        "silent_samples": 4,
+        "series": [
+          {
+            "t_ms": 0,
+            "level": 0
+          },
+          {
+            "t_ms": 3000,
+            "level": 18
+          },
+          {
+            "t_ms": 6000,
+            "level": 44
+          },
+          {
+            "t_ms": 9000,
+            "level": 35
+          },
+          {
+            "t_ms": 12000,
+            "level": 0
+          },
+          {
+            "t_ms": 15000,
+            "level": 0
+          },
+          {
+            "t_ms": 18000,
+            "level": 27
+          },
+          {
+            "t_ms": 21000,
+            "level": 52
+          },
+          {
+            "t_ms": 24000,
+            "level": 33
+          },
+          {
+            "t_ms": 27000,
+            "level": 0
+          }
+        ],
+        "_note": "speech energy sampled by the client; zeros are silence"
+      },
+      "silence_ms": 6100,
+      "silence_ratio_pct": 10.0,
+      "_note": "dtx_rx_duration_t is how long the peer transmitted nothing"
+    },
+    "fingerprint": {
+      "frame_length_ms": 20,
+      "decode_time_ms": 4,
+      "jitter_buffer_ms": 18,
+      "uplink_bwe_bps": 56000,
+      "_note": "rx-side values describe what the peer produced"
+    },
+    "correlation": {
+      "abtest_bucket": "DEMO-7",
+      "abtest_id_list": "DEMO-7,DEMO-9",
+      "call_ids": [
+        "DEMO-CALL-0001"
+      ],
+      "_note": "the bucket id was identical across three calls to the same device, so it links calls over a short window. It tracks the DEVICE: another device on the same account gave a different platform, version and LAN address."
+    }
+  },
+  "self": {
+    "public_ip": "192.0.2.10",
+    "lan_prefix": "192.168.1.0/24",
+    "reflexive_ip": null,
+    "_note": "included so peer values can be told apart from ours"
+  },
+  "participant_contexts": [
+    {
+      "ctx": "demo-peer",
+      "role": "peer",
+      "device_count": 1,
+      "events": 37
+    }
+  ],
+  "caveats": [
+    "No JID or phone number exists on this layer — confirmed across three runs; the VoIP layer works with a call id instead.",
+    "No location data in call signalling; relay latency is the only geographic proxy and it is not always a real measurement.",
+    "battery_low is present in telemetry but which side it belongs to was never established.",
+    "WAM hooks did not fire during calls, so the messaging surface is not covered here."
+  ],
+  "sample": {
+    "is_synthetic": true,
+    "notice": "ÖRNEK VERİ — gerçek WhatsApp aramasından veya kullanıcıdan alınmamıştır.",
+    "addresses": "198.51.100.0/24 ve 192.0.2.0/24 belge örnekleri için ayrılmıştır."
+  }
+}

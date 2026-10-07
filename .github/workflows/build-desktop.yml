@@ -1,0 +1,123 @@
+name: Masaüstü paketleri
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            arch: x64
+          - os: macos-15
+            arch: arm64
+          - os: macos-15-intel
+            arch: x64
+          - os: ubuntu-24.04
+            arch: x64
+    defaults:
+      run:
+        working-directory: whatsapp
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Python kurulumu
+        if: runner.os != 'Linux'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Linux için Tk kurulumu
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y python3-tk python3-venv xvfb scrot
+
+      - name: Gerçek Linux arayüzünün örnek veri görüntüsünü al
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          mkdir -p dist
+          xvfb-run -a /usr/bin/python3 - <<'PY'
+          import subprocess
+          import tkinter as tk
+          from pathlib import Path
+          import wa_peer_gui
+
+          # Tarayıcı açılışı ekran görüntüsü penceresini örtmesin.
+          wa_peer_gui.open_local_path = lambda path: None
+          root = tk.Tk()
+          app = wa_peer_gui.WhatsAppCaptureApp(
+              root, Path('examples/demo_report.json').resolve())
+          root.geometry('800x560+0+0')
+
+          def capture():
+              if app.status_var.get() != 'Rapor hazır.':
+                  root.after(400, capture)
+                  return
+              root.update()
+              subprocess.run(['scrot', '-a', '0,0,800,560', '-o', 'dist/gui-linux.png'], check=True)
+              root.destroy()
+
+          root.after(400, capture)
+          root.after(20000, root.destroy)
+          root.mainloop()
+          if not Path('dist/gui-linux.png').is_file():
+              raise SystemExit('Örnek GUI görüntüsü oluşturulamadı')
+          PY
+
+      - name: Windows paketini oluştur
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          python -m pip install -r requirements.txt 'pyinstaller>=6,<7'
+          python -m PyInstaller --noconfirm --clean --onefile --windowed --name WhatsAppAramaRaporu --collect-all frida --hidden-import wa_peer wa_peer_gui.pyw
+          Copy-Item ../LICENSE dist/LICENSE.txt
+
+      - name: macOS paketini oluştur
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          bash build_macos.sh
+          ditto -c -k --sequesterRsrc --keepParent dist/WhatsAppRaporGoruntuleyici.app dist/WhatsAppRaporGoruntuleyici-macOS-${{ matrix.arch }}.zip
+
+      - name: Linux paketini oluştur
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          BUILD_PYTHON=/usr/bin/python3 bash build_linux.sh
+          tar -C dist -czf dist/WhatsAppRaporGoruntuleyici-Linux.tar.gz WhatsAppRaporGoruntuleyici
+
+      - name: Windows paketini sakla
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: WhatsAppAramaRaporu-Windows
+          path: |
+            whatsapp/dist/WhatsAppAramaRaporu.exe
+            whatsapp/dist/LICENSE.txt
+
+      - name: macOS paketini sakla
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v4
+        with:
+          name: WhatsAppRaporGoruntuleyici-macOS-${{ matrix.arch }}
+          path: whatsapp/dist/WhatsAppRaporGoruntuleyici-macOS-${{ matrix.arch }}.zip
+
+      - name: Linux paketini sakla
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: WhatsAppRaporGoruntuleyici-Linux
+          path: whatsapp/dist/WhatsAppRaporGoruntuleyici-Linux.tar.gz
+
+      - name: Linux arayüzü ekran görüntüsünü sakla
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: gui-linux-ornegi
+          path: whatsapp/dist/gui-linux.png

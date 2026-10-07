@@ -1,0 +1,11 @@
+.venv/
+.venv-macos/
+.venv-linux/
+build/
+dist/
+*.spec
+__pycache__/
+*.pyc
+wa_peer_full_*.json
+wa_peer_report_*.html
+wa_peer_raw_*.jsonl
